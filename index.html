@@ -27,16 +27,12 @@
 
     <body>
         <div class="container-fluid bg">
+            <a href="/"><h2 class="link">weatheria.io</h2></a>
             <div class="row pt-5">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-center gap-3">
-                        <input
-                            type="text"
-                            id="city"
-                            placeholder="Enter a city name"
-                            class="form-control"
-                        />
+                        <input type="text" id="city" placeholder="Enter a city name" class="form-control" />
                         <button onclick="search()" class="btn btn-success">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -47,27 +43,47 @@
             <!-- Result -->
             <div class="row mt-5">
                 <div class="col-md-4"></div>
-                <div class="col-md-4" id="result">
-                </div>
+                <div class="col-md-4" id="result"></div>
                 <div class="col-md-4"></div>
             </div>
             <!-- History -->
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8" id="history"></div>
-                <div class="col-md-2"></div>
-            </div>
+            <!-- <h2 style="margin-left: 7rem; padding-top: 05vh">History</h2>
+    
+            <div class="d-flex view gap-5 mt-2" id="search_history" style="padding-left: 5rem; padding-right: 5rem">
+                <div class="history d-flex shadow p-3" style="width: 30rem">
+                    <div class="d-flex flex-column align-item-center gap-1 w-100">
+                        <h3 class="text-center mb-4">
+                            <span style="color: grey">${city_name}</span>
+                        </h3>
+                        <p>Description:${main}</p>
+                        <p>Temperature : ${temp}°C</p>
+                        <p>Humidity:${humidity}%</p>
+                        <p>Wind:${wind}lm/hr</p>
+                    </div>                   
+                </div>
+                <div class="history d-flex shadow p-3" style="width: 30rem">
+                    <div class="d-flex flex-column align-item-center gap-1 w-100">
+                        <h3 class="text-center mb-4">
+                            <span style="color: grey">${city_name}</span>
+                        </h3>
+                        <p>Description:${main}</p>
+                        <p>Temperature : ${temp}°C</p>
+                        <p>Humidity:${humidity}%</p>
+                        <p>Wind:${wind}lm/hr</p>
+                    </div>                   
+                </div>
+                
+            </div> -->
         </div>
     </body>
     <script>
         const search = async () => {
             let city_name = city.value;
-            const API_key = "46be44844231ae59f06c96786ce5073b";
             // console.log(city_name);
             if (city_name) {
                 try {
                     const location = await fetch(
-                        `https://api.openweathermap.org/geo/1.0/direct?q=${city_name}&appid=${API_key}`
+                        `https://api.openweathermap.org/geo/1.0/direct?q=${city_name}&appid=46be44844231ae59f06c96786ce5073b`
                     );
                     const data = await location.json();
                     var lat = false;
@@ -81,7 +97,7 @@
                     if (lat != false && lon != false) {
                         // console.log(lat, lon);
                         const weather = await fetch(
-                            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}`
+                            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=46be44844231ae59f06c96786ce5073b`
                         );
                         const weather_data = await weather.json();
                         let temp = weather_data.main.temp - 273.15;
@@ -123,11 +139,26 @@
                         alert("Invalid City Name");
                     }
                 } catch (error) {
-                    alert("An error has been Occured!")
+                    alert("An error has been Occured!");
                 }
             } else {
                 alert("Enter a city Name");
             }
+            search_history.innerHTML += `
+            <div class="history d-flex shadow p-3" style="width: 30rem">
+                <div
+                    class="d-flex flex-column align-item-center gap-1 w-100"
+                >
+                    <h3 class="text-center mb-4">
+                        <span style="color: grey">${city_name}</span>
+                    </h3>
+                    <p>Description:${main}</p>
+                    <p>Temperature : ${temp}°C</p>
+                    <p>Humidity:${humidity}%</p>
+                    <p>Wind:${wind}lm/hr</p>
+                </div>
+            </div>
+                    `;
         };
     </script>
 </html>
