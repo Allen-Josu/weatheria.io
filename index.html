@@ -31,7 +31,12 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-center gap-3">
-                        <input type="text" id="city" placeholder="Enter a city name" class="form-control" />
+                        <input
+                            type="text"
+                            id="city"
+                            placeholder="Enter a city name"
+                            class="form-control"
+                        />
                         <button onclick="search()" class="btn btn-success">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -43,12 +48,15 @@
             <div class="row mt-5">
                 <div class="col-md-4"></div>
                 <div class="col-md-4" id="result">
-                   
                 </div>
                 <div class="col-md-4"></div>
             </div>
             <!-- History -->
-            <!-- <p>Search Hist</p> -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8" id="history"></div>
+                <div class="col-md-2"></div>
+            </div>
         </div>
     </body>
     <script>
@@ -62,29 +70,32 @@
                         `https://api.openweathermap.org/geo/1.0/direct?q=${city_name}&appid=${API_key}`
                     );
                     const data = await location.json();
-                    var lat = "";
-                    var lon = "";
+                    var lat = false;
+                    var lon = false;
                     data.forEach((item) => {
                         lat = item.lat;
                         lon = item.lon;
                     });
-                    // console.log(lat, lon);
-                    const weather = await fetch(
-                        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}`
-                    );
-                    const weather_data = await weather.json();
-                    let temp = weather_data.main.temp - 273.15;
-                    temp = temp.toFixed(2);
-                    // console.log(temp);
-                    let feels = weather_data.main.feels_like - 273.15;
-                    feels = feels.toFixed(2);
-                    let humidity = weather_data.main.humidity;
-                    // console.log(humidity);
-                    let wind = weather_data.wind.speed;
-                    // console.log(wind);
-                    let main = weather_data.weather[0].main;
-                    // console.log(main);
-                    result.innerHTML = `
+                    console.log(`Lat : ${lat}`);
+                    console.log(`Lon : ${lon}`);
+                    if (lat != false && lon != false) {
+                        // console.log(lat, lon);
+                        const weather = await fetch(
+                            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}`
+                        );
+                        const weather_data = await weather.json();
+                        let temp = weather_data.main.temp - 273.15;
+                        temp = temp.toFixed(2);
+                        // console.log(temp);
+                        let feels = weather_data.main.feels_like - 273.15;
+                        feels = feels.toFixed(2);
+                        let humidity = weather_data.main.humidity;
+                        // console.log(humidity);
+                        let wind = weather_data.wind.speed;
+                        // console.log(wind);
+                        let main = weather_data.weather[0].main;
+                        // console.log(main);
+                        result.innerHTML = `
                     <div class="content shadow">
                         <div class="d-flex p-3 justify-content-evenly align-items-center ">
                             <div class="d-flex flex-column align-items-center">
@@ -108,8 +119,11 @@
                         </div>
                     </div>
                     `;
+                    } else {
+                        alert("Invalid City Name");
+                    }
                 } catch (error) {
-                    console.log("Error ", error);
+                    alert("An error has been Occured!")
                 }
             } else {
                 alert("Enter a city Name");
