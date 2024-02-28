@@ -59,7 +59,7 @@
             if (city_name) {
                 try {
                     const location = await fetch(
-                        `http://api.openweathermap.org/geo/1.0/direct?q=${city_name}&appid=${API_key}`
+                        `https://api.openweathermap.org/geo/1.0/direct?q=${city_name}&appid=${API_key}`
                     );
                     const data = await location.json();
                     var lat = "";
